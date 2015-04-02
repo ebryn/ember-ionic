@@ -1,25 +1,39 @@
-# Ember-ionic
+# Ember-Ionic
 
-This README outlines the details of collaborating on this Ember addon.
+Ember Components that use the Ionic project's CSS.
 
 ## Installation
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+`ember install:addon ember-ionic`
 
-## Running
+## Usage
 
-* `ember server`
-* Visit your app at http://localhost:4200.
+See [demo app source]() for examples.
 
-## Running Tests
+## Components & attribute lists
 
-* `ember test`
-* `ember test --server`
+* [ion-header](http://ionicframework.com/docs/components/#header)
+  * kind (string: "light", "stable", "positive", etc.)
+* [ion-footer](http://ionicframework.com/docs/components/#footer)
+  * kind (string: "light", "stable", "positive", etc.)
+* [ion-content](http://ionicframework.com/docs/components/#content)
+  * header (boolean)
+  * footer (boolean)
+* [ion-list](http://ionicframework.com/docs/components/#list)
+* [ion-list-item](http://ionicframework.com/docs/components/#list)
+* [ion-button](http://ionicframework.com/docs/components/#buttons)
+  * kind (string: "light", "stable", "positive", etc.)
+  * block (boolean)
+  * full (boolean)
+  * small (boolean)
+  * large (boolean)
+  * outline (boolean)
+  * clear (boolean)
+* [ion-button-bar](http://ionicframework.com/docs/components/#button-bar)
 
-## Building
+## Helpers
 
-* `ember build`
+* [ion-icon](http://ionicframework.com/docs/components/#icons)
+  * `{{ion-icon "star"}}`
 
-For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+_Don't see something you need? Please help out by submitting a PR!_

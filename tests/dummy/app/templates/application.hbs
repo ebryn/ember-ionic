@@ -1,3 +1,17 @@
-<h2 id="title">Welcome to Ember.js</h2>
-
 {{outlet}}
+<ion-header kind="light">Header</ion-header>
+<ion-content class="has-footer">
+  <ion-list>
+    <a class="item item-icon-left item-icon-right" href="#">
+      {{ion-icon "chatbubble-working"}}
+      Call Ma
+      {{ion-icon "chatbubble-working"}}
+    </a>
+    {{#each model.items as |item|}}
+      <ion-list-item>
+        {{item}}
+      </ion-list-item>
+    {{/each}}
+  </ion-list>
+</ion-content>
+<ion-footer kind="light">Footer</ion-footer>
