@@ -8,7 +8,7 @@ Ember Components that use the Ionic project's CSS.
 
 ## Usage
 
-See [demo app source]() for examples.
+See [demo app source](https://github.com/ebryn/ember-ionic/blob/master/tests/dummy/app/templates/application.hbs) for example usage.
 
 ## Components & attribute lists
 
