@@ -1,7 +1,7 @@
 {
   "name": "ember-ionic",
-  "version": "0.0.3",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.0.4",
+  "description": "Ember Components that use the Ionic project's CSS",
   "directories": {
     "doc": "doc",
     "test": "tests"
