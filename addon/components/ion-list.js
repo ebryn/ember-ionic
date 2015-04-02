@@ -4,5 +4,8 @@ import layout from '../templates/components/ion-list';
 export default Ember.Component.extend({
   layout: layout,
   tagName: 'ion-list',
-  classNames: ['list']
+  classNames: ['list'],
+  classNameBindings: [
+    'inset:list-inset'
+  ]
 });
