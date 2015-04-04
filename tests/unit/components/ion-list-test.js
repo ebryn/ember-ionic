@@ -3,7 +3,7 @@ import {
   test
 } from 'ember-qunit';
 
-moduleForComponent('ionic-list', {
+moduleForComponent('ion-list', {
   // specify the other units that are required for this test
   // needs: ['component:foo', 'helper:bar']
 });
