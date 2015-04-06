@@ -1,13 +1,13 @@
-<ion-header kind="light">Header</ion-header>
-<ion-content header=true footer=true>
-  <ion-button block=true>ohai</ion-button>
-  <ion-list>
-    <ion-item checkbox=true>
-      <ion-checkbox></ion-checkbox> Flux Capacitor
-    </ion-item>
-    <ion-item toggle=true>
-      Web Components <ion-toggle/>
-    </ion-item>
+{{#ion-header kind="positive"}}Header{{/ion-header}}
+{{#ion-content header=true footer=true}}
+  {{#ion-button block=true}}ohai{{/ion-button}}
+  {{#ion-list}}
+    {{#ion-item checkbox=true}}
+      {{#ion-checkbox}}{{/ion-checkbox}} Flux Capacitor
+    {{/ion-item}}
+    {{#ion-item toggle=true}}
+      Web Components {{ion-toggle}}
+    {{/ion-item}}
 
     <a class="item item-icon-left item-icon-right" href="#">
       {{ion-icon "chatbubble-working"}}
@@ -15,10 +15,10 @@
       {{ion-icon "chatbubble-working"}}
     </a>
     {{#each model.items as |item|}}
-      <ion-list-item>
+      {{#ion-list-item}}
         {{item}}
-      </ion-list-item>
+      {{/ion-list-item}}
     {{/each}}
-  </ion-list>
-</ion-content>
-<ion-footer kind="light">Footer</ion-footer>
+  {{/ion-list}}
+{{/ion-content}}
+{{#ion-footer kind="light"}}Footer{{/ion-footer}}
