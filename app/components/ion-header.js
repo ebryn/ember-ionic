@@ -1,3 +1,1 @@
-import ionicHeader from 'ember-ionic/components/ion-header';
-
-export default ionicHeader;
+export { default } from 'ember-ionic/components/ion-header';

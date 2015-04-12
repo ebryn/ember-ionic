@@ -1,3 +1,1 @@
-import ionicList from 'ember-ionic/components/ion-list';
-
-export default ionicList;
+export { default } from 'ember-ionic/components/ion-list';
