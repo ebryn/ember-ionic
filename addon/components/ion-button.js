@@ -1,8 +1,6 @@
 import Ember from 'ember';
-import layout from '../templates/components/ion-button';
 
 export default Ember.Component.extend({
-  layout: layout,
   tagName: 'button',
   classNames: ['button'],
   classNameBindings: [
