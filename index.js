@@ -12,5 +12,6 @@ module.exports = {
     app.import(app.bowerDirectory + '/ionic/release/fonts/ionicons.svg',  {destDir: 'fonts'});
     app.import(app.bowerDirectory + '/ionic/release/fonts/ionicons.ttf',  {destDir: 'fonts'});
     app.import(app.bowerDirectory + '/ionic/release/fonts/ionicons.woff', {destDir: 'fonts'});
+    app.import(app.bowerDirectory + '/hammerjs/hammer.js');
   }
 };
