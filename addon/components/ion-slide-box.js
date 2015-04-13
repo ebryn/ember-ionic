@@ -13,7 +13,7 @@ export default Ember.Component.extend({
   totalWidth: Ember.computed('_slides.length', 'originalWidth', function() {
     let slides = this._slides;
     let numberOfSlides = slides && slides.length || 0;
-    let originalWidth = this.get('originalWidth')
+    let originalWidth = this.get('originalWidth');
     let totalWidth = numberOfSlides * originalWidth;
     return `${totalWidth}`.htmlSafe();
   }),
@@ -38,7 +38,7 @@ export default Ember.Component.extend({
     let hammer = new Hammer(this.element);
 
     hammer.on('pan', event => {
-      this.pan(event)
+      this.pan(event);
     });
 
     hammer.on('panend', event => {
@@ -61,27 +61,29 @@ export default Ember.Component.extend({
 
   finishTranslation(deltaX) {
     let threshold = this.originalWidth/2;
-    let offset;
+    let offset, restoreNext, restorePrevious;
     let currentSlideIdx = this.currentSlideIdx;
 
-    if (deltaX > threshold) {
-      // move to previous slide
+    if (deltaX > threshold && currentSlideIdx > 0) {
+      // move index to previous slide
       this.decrementProperty('currentSlideIdx');
       offset = this.originalWidth - deltaX;
-    } else if (deltaX < -threshold) {
-      // move to next slide
+      // these restore variables return the slides to the "deck"
+      restoreNext = -deltaX;
+    } else if (deltaX < -threshold && currentSlideIdx < (this._slides.length - 1)) {
+      // move index to next slide
       this.incrementProperty('currentSlideIdx');
       offset = -(this.originalWidth + deltaX);
+      restorePrevious = -deltaX;
     } else {
-      offset = -deltaX
+      offset = -deltaX;
     }
 
-    this.moveAtIndex(offset, currentSlideIdx);
+    this.moveAtIndex(offset, currentSlideIdx, restoreNext, restorePrevious);
 
   },
 
   translateSlides(event) {
-    console.log(event);
     let offset;
     if (!this.originX) {
       offset = this.originX = event.deltaX;
@@ -89,24 +91,31 @@ export default Ember.Component.extend({
       offset = event.deltaX - this.originX;
       this.originX = event.deltaX;
     }
-    // debugger;
+
     this.moveAtIndex(offset, this.currentSlideIdx);
   },
 
-  moveAtIndex(offset, index) {
+  moveAtIndex(offset, currentIndex, restoreNext, restorePrevious) {
     let slides = this._slides;
-    if (!slides.length) { return; }
-    let previousSlide = slides[index - 1];
-    let currentSlide = slides[index];
-    let nextSlide = slides[index + 1];
 
-    if (previousSlide) {
+    if (!slides.length) { return; }
+
+    let previousSlide = slides[currentIndex - 1];
+    let nextSlide = slides[currentIndex + 1];
+
+    let currentSlide = slides[currentIndex];
+
+    if (restorePrevious && previousSlide && offset < 0) {
+      previousSlide.set('translateX', previousSlide.get('translateX') + restorePrevious);
+    } else if (previousSlide) {
       previousSlide.set('translateX', previousSlide.get('translateX') + offset);
     }
 
     currentSlide.set('translateX', currentSlide.get('translateX') + offset);
 
-    if (nextSlide) {
+    if (restoreNext && nextSlide && offset > 0) {
+      nextSlide.set('translateX', nextSlide.get('translateX') + restoreNext);
+    } else if (nextSlide) {
       nextSlide.set('translateX', nextSlide.get('translateX') + offset);
     }
   },
@@ -126,23 +135,6 @@ export default Ember.Component.extend({
       }
     }
   },
-
-  // panLeft() {
-  //   let { currentSlideIdx, _slides, originalWidth } = this;
-  //   let totalSlides = this._slides.length;
-  //   let currentSlide = _slides[currentSlideIdx];
-  //   if (currentSlideIdx < totalSlides) {
-  //     currentSlideIdx++;
-  //     let nextSlide = _slides[currentSlideIdx];
-  //     currentSlide.decrementProperty('left', originalWidth);
-  //     nextSlide.decrementProperty('left', originalWidth);
-  //     this.currentSlideIdx = currentSlideIdx;
-  //   }
-  // },
-
-  // panRight() {
-
-  // },
 
   addSlide(slide) {
     let slides = this._slides;
