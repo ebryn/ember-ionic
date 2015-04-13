@@ -103,4 +103,13 @@ test('panning past the threshold', function(assert) {
   assert.equal(translateXOfSlide(1), "0px");
   assert.equal(translateXOfSlide(2), "200px");
   assert.equal(translateXOfSlide(3), "200px");
+
+  // pan back to the left more than 50%
+  box.pan(panLeft(101));
+  box.panEnd(panLeft(101));
+
+  assert.equal(box.get('currentSlideIdx'), 1);
+  assert.equal(translateXOfSlide(1), "-200px");
+  assert.equal(translateXOfSlide(2), "0px");
+  assert.equal(translateXOfSlide(3), "200px");
 });
