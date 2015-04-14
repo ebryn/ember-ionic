@@ -19,3 +19,10 @@ test('it renders', function(assert) {
   this.render();
   assert.equal(component._state, 'inDOM');
 });
+
+
+// this is probably a test that belongs in ion-item, ya?
+
+test('sliding an ion-item', function(assert) {
+  
+});
