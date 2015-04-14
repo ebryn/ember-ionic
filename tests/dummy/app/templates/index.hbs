@@ -5,7 +5,7 @@
     <ion-checkbox>
       Flux Capacitor
     </ion-checkbox>
-    
+
     <ion-toggle>
       Web Components
     </ion-toggle>
@@ -17,7 +17,12 @@
     </a>
     {{#each model.items as |item|}}
       <ion-item>
-        {{#link-to 'item.show' class="item-content"}}{{item}}{{/link-to}}
+        <img ng-src={{item.face}} src={{item.face}}>
+        <h2>{{item.name}}</h2>
+        <p>{{item.lastText}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+        {{!-- <ion-option-button class="button-assertive">Destroy</ion-option-button> --}}
       </ion-item>
     {{/each}}
   </ion-list>
