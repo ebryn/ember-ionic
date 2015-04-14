@@ -1,8 +1,9 @@
 {{#link-to 'item.show' class="item-content"}}
   {{yield}}
 {{/link-to}}
+
 <div class="item-options invisible">
-  {{#each options as |option|}}
-    {{!-- render option here --}}
+  {{#each optionButtons as |button|}}
+    {{view context=button.context template=button.template class=button.kindClass}}
   {{/each}}
 </div>

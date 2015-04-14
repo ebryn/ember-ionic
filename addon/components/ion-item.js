@@ -22,11 +22,11 @@ export default Ember.Component.extend({
     'thumbnail-right:item-thumbnail-right'
   ],
 
-  options: Ember.computed(function() {
+  optionButtons: Ember.computed(function() {
     return [];
   }),
 
-  registerOption(option) {
-    this.get('options').pushObject(option);
+  registerOptionButton(button) {
+    this.get('optionButtons').pushObject(button);
   }
 });

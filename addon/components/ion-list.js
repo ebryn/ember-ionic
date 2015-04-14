@@ -35,7 +35,7 @@ export default Ember.Component.extend({
 
   panEnd(event) {
     Ember.run(() => {
-      this.finishSlidingItem(event);
+      // this.finishSlidingItem(event);
     })
   },
 
