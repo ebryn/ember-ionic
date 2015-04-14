@@ -1,0 +1,6 @@
+<div class="tab-nav tabs">
+  {{yield}}
+</div>
+
+{{! kind of a hack }}
+{{view context=currentTab.context template=currentTab.template}}
