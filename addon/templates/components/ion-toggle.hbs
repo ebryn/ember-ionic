@@ -1,4 +1,10 @@
-{{input type="checkbox" checked=checked}}
-<div class="track">
-  <div class="handle"></div>
+<div>
+  <span>{{yield}}</span>
 </div>
+
+<label class="toggle disable-user-behavior">
+  {{input type="checkbox" checked=checked}}
+  <div class="track">
+    <div class="handle"></div>
+  </div>
+</label>

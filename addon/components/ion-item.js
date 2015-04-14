@@ -1,7 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  tagName: 'ion-list-item',
+  layout: layout,
+  tagName: 'ion-item',
   classNames: ['item'],
   classNameBindings: [
     'toggle:item-toggle',

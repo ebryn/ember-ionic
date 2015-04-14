@@ -40,6 +40,6 @@ export default Ember.Component.extend({
   },
 
   slideItem(event) {
-    debugger;
+    // debugger;
   }
 });
