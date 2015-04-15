@@ -1,4 +1,6 @@
 import Ember from 'ember';
+import layout from '../templates/components/ion-list';
+import IonItem from './ion-item';
 
 export default Ember.Component.extend({
   tagName: 'ion-list',
@@ -18,28 +20,59 @@ export default Ember.Component.extend({
   didInsertElement() {
     let hammer = new Hammer(this.element);
 
-    hammer.on('pan', event => {
-      this.pan(event);
-    });
+    hammer.on('pan panend', event => {
+      // debugger;
+      let slidingContent, slidingItem;
+      if (event.target.classList.contains("item-content")) {
+        slidingContent = event.target
+      } else if (event.target.parentElement.classList.contains("item-content")) {
+        slidingContent = event.target.parentElement
+      }
 
-    hammer.on('panend', event => {
-      this.panEnd(event);
+      // how do I grab the ion item component that I want?
+
+      // slidingItem = slidingContent.parentElement
+
+      if (event.type === 'pan') {
+        this.pan(event, slidingItem);
+      } else if (event.type === 'panend') {
+        this.panEnd(event, slidingItem);
+      }
     });
   },
 
-  pan(event) {
+  pan(event, slidingItem) {
     Ember.run(() => {
-      this.slideItem(event);
+      this.slideItem(event, slidingItem);
     });
   },
 
-  panEnd(event) {
+  panEnd(event, slidingItem) {
     Ember.run(() => {
-      // this.finishSlidingItem(event);
+      this.finishSlidingItem(event, slidingItem);
     })
   },
 
-  slideItem(event) {
+  slideItem(event, slidingItem) {
+    // debugger;
+    let offset;
+    if (!this.originX) {
+      offset = this.originX = event.deltaX;
+    } else {
+      offset = event.deltaX - this.originX;
+      this.originX = event.deltaX;
+    }
+
+    this.moveAtIndex(offset, slidingItem);
+  },
+
+  moveAtIndex(offset, slidingItem) {
+    debugger;
+    slidingItem.set('translateX', slidingItem.get('translateX') + offset);
+  },
+
+  finishSlidingItem(event, slidingItem) {
+    this.originX = null;
     // debugger;
   }
 });

@@ -22,6 +22,12 @@ export default Ember.Component.extend({
     'thumbnail-right:item-thumbnail-right'
   ],
 
+  translateX: null,
+
+  transformOutput: Ember.computed('translateX', function() {
+    return `transform: translateX(${this.get('translateX')})`;
+  }),
+
   optionButtons: Ember.computed(function() {
     return [];
   }),
