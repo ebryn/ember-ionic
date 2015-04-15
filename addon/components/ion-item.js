@@ -3,7 +3,7 @@ import layout from '../templates/components/ion-item';
 
 Ember.LinkView.reopen({
   attributeBindings: ["style"]
-})
+});
 
 export default Ember.Component.extend({
   layout: layout,
@@ -25,11 +25,14 @@ export default Ember.Component.extend({
     'thumbnail-right:item-thumbnail-right'
   ],
 
-  translateX: null,
-  originalWidth: null,
+  translateX: 0,
+  originalWidth: 0,
+  translateSpeed: 0,
+  open: null,
 
-  transformOutput: Ember.computed('translateX', function() {
-    return `transform: translate(${this.get('translateX')}px, 0px); transition: translate 0s`.htmlSafe();
+  transformOutput: Ember.computed('translateX', 'translateSpeed', function() {
+    return `transform: translate(${this.get('translateX')}px, 0px);
+            transition: ${this.get('translateSpeed')}s transform`.htmlSafe();
   }),
 
   optionButtons: Ember.computed(function() {
@@ -43,6 +46,7 @@ export default Ember.Component.extend({
   didInsertElement() {
     let {width} = this.element.getBoundingClientRect();
     let hammer = new Hammer(this.element);
+    let slidingLink = this.element.getElementsByClassName("item-content")[0];
 
     this.originalWidth = width;
 
@@ -52,6 +56,13 @@ export default Ember.Component.extend({
       } else if (event.type === 'panend') {
         this.panEnd(event);
       }
+    });
+
+    slidingLink.addEventListener("transitionend", () => {
+      if (!this.open) {
+        this.element.getElementsByClassName("item-options")[0].classList.add("invisible");
+      }
+      this.set('translateSpeed', 0);
     });
   },
 
@@ -64,7 +75,7 @@ export default Ember.Component.extend({
   panEnd(event) {
     Ember.run(() => {
       this.finishSlidingItem(event);
-    })
+    });
   },
 
   slideItem(event) {
@@ -81,18 +92,20 @@ export default Ember.Component.extend({
 
   moveAtIndex(offset) {
     let withinRightMax = (this.translateX + offset) <= 0;
-    let withinLeftMax = (this.translateX + offset) >= (this.originalWidth * -.70);
+    let withinLeftMax = (this.translateX + offset) >= (this.originalWidth * -0.70);
     if (withinRightMax && withinLeftMax) {
       this.set('translateX', this.translateX + offset);
     }
   },
 
-  finishSlidingItem(event) {
-    let optionsWidth = this.element.getElementsByClassName("item-options")[0].offsetWidth
+  finishSlidingItem() {
+    let optionsWidth = this.element.getElementsByClassName("item-options")[0].offsetWidth;
+    this.set('translateSpeed', 0.4);
     if (this.translateX < -optionsWidth) {
+      this.open = true;
       this.set('translateX', -optionsWidth);
     } else {
-      this.element.getElementsByClassName("item-options")[0].classList.add("invisible");
+      this.open = false;
       this.set('translateX', 0);
     }
 
