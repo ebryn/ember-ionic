@@ -36,6 +36,7 @@ export default Ember.Component.extend({
   originalWidth: 0,
   translateSpeed: 0,
   open: null,
+  optionVisibility: 'invisible',
 
   transformOutput: Ember.computed('translateX', 'translateSpeed', function() {
     return Ember.String.htmlSafe(`transform: translate(${this.get('translateX')}px, 0px);
@@ -67,7 +68,7 @@ export default Ember.Component.extend({
 
     slidingLink.addEventListener("transitionend", () => {
       if (!this.open) {
-        this.element.getElementsByClassName("item-options")[0].classList.add("invisible");
+        this.set('optionVisiblity', 'invisible');
       }
       this.set('translateSpeed', 0);
     });
@@ -88,7 +89,7 @@ export default Ember.Component.extend({
   slideItem(event) {
     let offset;
     if (!this.originX) {
-      this.element.getElementsByClassName("item-options")[0].classList.remove("invisible");
+      this.set('optionVisibility', '');
       offset = this.originX = event.deltaX;
     } else {
       offset = event.deltaX - this.originX;

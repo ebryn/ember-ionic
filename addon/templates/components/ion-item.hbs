@@ -2,8 +2,8 @@
   {{yield}}
 {{/link-to}}
 
-<div class="item-options invisible">
-  {{#each optionButtons as |button|}}
-    {{view context=button.context template=button.template class=button.kindClass}}
-  {{/each}}
+<div class="item-options {{optionVisibility}}">
+  {{~#each optionButtons as |button|}}
+    {{~view context=button.context template=button.template class=button.kindClass}}
+  {{~/each~}}
 </div>
