@@ -8,13 +8,14 @@ export default Ember.Component.extend({
   classNames: ['slider-slide'],
   attributeBindings: ['style'],
   style: Ember.computed('width', 'height', 'left', 'translateX', function() {
-    return `width: ${this.width}px;
+    return Ember.String.htmlSafe(
+            `width: ${this.width}px;
             height: ${this.height}px;
             left: ${this.left}px;
             /*transition-duration: 300ms;
             -webkit-transition-duration: 300ms;
             */
-            -webkit-transform: translate(${this.translateX}px, 0px) translateZ(0px);`.htmlSafe();
+            -webkit-transform: translate(${this.translateX}px, 0px) translateZ(0px);`);
   }),
   width: null,
   height: null,

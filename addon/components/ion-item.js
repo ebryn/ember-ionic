@@ -38,12 +38,12 @@ export default Ember.Component.extend({
   open: null,
 
   transformOutput: Ember.computed('translateX', 'translateSpeed', function() {
-    return `transform: translate(${this.get('translateX')}px, 0px);
-            transition: ${this.get('translateSpeed')}s transform`.htmlSafe();
+    return Ember.String.htmlSafe(`transform: translate(${this.get('translateX')}px, 0px);
+            transition: ${this.get('translateSpeed')}s transform`);
   }),
 
   optionButtons: Ember.computed(function() {
-    return [];
+    return Ember.A([]);
   }),
 
   registerOptionButton(button) {

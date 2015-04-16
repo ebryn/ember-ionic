@@ -7,6 +7,6 @@ var Router = Ember.Router.extend({
 
 export default Router.map(function() {
   this.route('index', { path: '/' });
-  this.route('item.show')
+  this.route('item.show');
   this.route('slideBox');
 });

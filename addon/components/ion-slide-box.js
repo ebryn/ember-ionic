@@ -7,7 +7,7 @@ export default Ember.Component.extend({
   classNames: ['slider'],
   attributeBindings: ['style'],
   style: Ember.computed(function() {
-    return `visibility: visible`.htmlSafe();
+    return Ember.String.htmlSafe(`visibility: visible`);
   }),
   originalWidth: null,
   totalWidth: Ember.computed('_slides.length', 'originalWidth', function() {
@@ -15,13 +15,13 @@ export default Ember.Component.extend({
     let numberOfSlides = slides && slides.length || 0;
     let originalWidth = this.get('originalWidth');
     let totalWidth = numberOfSlides * originalWidth;
-    return `${totalWidth}`.htmlSafe();
+    return Ember.String.htmlSafe(`${totalWidth}`);
   }),
   currentSlideIdx: 0,
 
   init() {
     this._super(...arguments);
-    this._slides = [];
+    this._slides = Ember.A([]);
   },
 
   didInsertElement() {
