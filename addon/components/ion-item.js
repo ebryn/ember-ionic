@@ -57,7 +57,7 @@ export default Ember.Component.extend({
   didInsertElement() {
     let {width} = this.element.getBoundingClientRect();
     let hammer = new Hammer(this.element);
-    let slidingLink = this.element.getElementsByClassName("item-content")[0];
+    let slidingLink = this.element.querySelector(".item-content");
 
     this.originalWidth = width;
 
@@ -110,7 +110,7 @@ export default Ember.Component.extend({
   },
 
   finishSlidingItem() {
-    let optionsWidth = this.element.getElementsByClassName("item-options")[0].offsetWidth;
+    let optionsWidth = this.element.querySelector(".item-options").offsetWidth;
     this.set('translateSpeed', 0.4);
     if (this.translateX < -optionsWidth) {
       this.open = true;
