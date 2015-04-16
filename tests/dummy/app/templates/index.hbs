@@ -16,7 +16,7 @@
       {{ion-icon "chatbubble-working"}}
     </a>
     {{#each model.items as |item|}}
-      <ion-item>
+      <ion-item avatar=true icon-right=true remove-animate=true complex=true right-editable=true>
         <img ng-src={{item.face}} src={{item.face}}>
         <h2>{{item.name}}</h2>
         <p>{{item.lastText}}</p>

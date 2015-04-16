@@ -9,8 +9,11 @@ Ember.LinkView.reopen({
 export default Ember.Component.extend({
   layout: layout,
   tagName: 'ion-item',
-  classNames: ['item', 'item-remove-animate', 'item-avatar', 'item-icon-right', 'item-complex', 'item-right-editable'],
+  classNames: ['item'],
   classNameBindings: [
+    'right-editable:item-right-editable',
+    'complex:item-complex',
+    'remove-animate:item-remove-animate',
     'toggle:item-toggle',
     'checkbox:item-checkbox',
     'radio:item-radio',
