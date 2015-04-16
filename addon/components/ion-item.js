@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/ion-item';
+import IonList from './ion-list';
 
 Ember.LinkView.reopen({
   attributeBindings: ["style"]
@@ -24,6 +25,12 @@ export default Ember.Component.extend({
     'thumbnail-left:item-thumbnail-left',
     'thumbnail-right:item-thumbnail-right'
   ],
+
+  init() {
+    this._super(...arguments);
+    let ionList = this.nearestOfType(IonList);
+    ionList.registerItem(this);
+  },
 
   translateX: 0,
   originalWidth: 0,

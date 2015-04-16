@@ -7,5 +7,15 @@ export default Ember.Component.extend({
   classNames: ['list'],
   classNameBindings: [
     'inset:list-inset'
-  ]
+  ],
+
+  init() {
+    this._super(...arguments);
+    this._items = [];
+  },
+
+  registerItem(item) {
+    let items = this._items;
+    items.pushObject(item); 
+  }
 });
