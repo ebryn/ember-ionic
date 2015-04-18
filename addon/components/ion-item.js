@@ -31,95 +31,96 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
+    this._optionButtons = Ember.A([]);
     let ionList = this.nearestOfType(IonList);
     ionList.registerItem(this);
   },
 
-  translateX: 0,
-  originalWidth: 0,
-  translateSpeed: 0,
-  open: null,
-  optionVisibility: 'invisible',
+  _previousX: 0,
+  _translateX: 0,
+  _screenWidth: 0,
+  _translateSpeed: 0,
+  _open: false,
+  _optionVisibilityClass: 'invisible',
 
-  transformOutput: Ember.computed('translateX', 'translateSpeed', function() {
-    return Ember.String.htmlSafe(`transform: translate(${this.get('translateX')}px, 0px);
-            transition: ${this.get('translateSpeed')}s transform`);
-  }),
-
-  optionButtons: Ember.computed(function() {
-    return Ember.A([]);
-  }),
-
-  registerOptionButton(button) {
-    this.get('optionButtons').pushObject(button);
+  _registerOptionButton(button) {
+    this.get('_optionButtons').pushObject(button);
   },
+
+  _transformOutput: Ember.computed('_translateX', '_translateSpeed', function() {
+    let escape = Ember.Handlebars.Utils.escapeExpression;
+    return Ember.String.htmlSafe(`transform: translate(${escape(this.get('_translateX'))}px, 0px);
+            transition: ${escape(this.get('_translateSpeed'))}s transform`);
+  }),
 
   didInsertElement() {
     let {width} = this.element.getBoundingClientRect();
     let hammer = new Hammer(this.element);
     let slidingLink = this.element.querySelector(".item-content");
 
-    this.originalWidth = width;
+    this._screenWidth = width;
 
     hammer.on('pan panend', event => {
       if (event.type === 'pan') {
-        this.pan(event);
+        this._pan(event);
       } else if (event.type === 'panend') {
-        this.panEnd(event);
+        this._panEnd(event);
       }
     });
 
     slidingLink.addEventListener("transitionend", () => {
-      if (!this.open) {
-        this.set('optionVisiblity', 'invisible');
+      if (!this._open) {
+        this.set('_optionVisiblity', 'invisible');
       }
-      this.set('translateSpeed', 0);
+      this.set('_translateSpeed', 0);
     });
   },
 
-  pan(event) {
+  _pan(event) {
     Ember.run(() => {
-      this.slideItem(event);
+      this._slideItem(event);
     });
   },
 
-  panEnd(event) {
+  _panEnd(event) {
     Ember.run(() => {
-      this.finishSlidingItem(event);
+      this._finishSlidingItem(event);
     });
   },
 
-  slideItem(event) {
+  _slideItem(event) {
     let offset;
-    if (!this.originX) {
-      this.set('optionVisibility', '');
-      offset = this.originX = event.deltaX;
+    if (!this._previousX) {
+      this.set('_optionVisibilityClass', '');
+      offset = this._previousX = event.deltaX;
     } else {
-      offset = event.deltaX - this.originX;
-      this.originX = event.deltaX;
+      offset = event.deltaX - this._previousX;
+      this._previousX = event.deltaX;
     }
-    this.moveAtIndex(offset);
+    this._applyTranslate(offset);
   },
 
-  moveAtIndex(offset) {
-    let withinRightMax = (this.translateX + offset) <= 0;
-    let withinLeftMax = (this.translateX + offset) >= (this.originalWidth * -0.70);
+  _applyTranslate(offset) {
+    const MAX_SLIDE_LEFT_SCREEN_RATIO = 0.7;
+    let withinRightMax = (this._translateX + offset) <= 0;
+    let withinLeftMax = (this._translateX + offset) >= (this._screenWidth * -MAX_SLIDE_LEFT_SCREEN_RATIO);
     if (withinRightMax && withinLeftMax) {
-      this.set('translateX', this.translateX + offset);
+      this.set('_translateX', this._translateX + offset);
     }
   },
 
-  finishSlidingItem() {
+  _finishSlidingItem() {
+    const ITEM_TRANSLATE_SPEED = 0.4;
     let optionsWidth = this.element.querySelector(".item-options").offsetWidth;
-    this.set('translateSpeed', 0.4);
-    if (this.translateX < -optionsWidth) {
-      this.open = true;
-      this.set('translateX', -optionsWidth);
+    this.set('_translateSpeed', ITEM_TRANSLATE_SPEED);
+    if (this._translateX < -optionsWidth) {
+      this._open = true;
+      this.set('_translateX', -optionsWidth);
     } else {
-      this.open = false;
-      this.set('translateX', 0);
+      this._open = false;
+      this.set('_translateX', 0);
     }
 
-    this.originX = null;
+    this._previousX = 0;
   }
 });

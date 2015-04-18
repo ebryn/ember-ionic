@@ -9,15 +9,18 @@ export default Ember.Component.extend({
   style: Ember.computed(function() {
     return Ember.String.htmlSafe(`visibility: visible`);
   }),
-  originalWidth: null,
-  totalWidth: Ember.computed('_slides.length', 'originalWidth', function() {
+
+  _currentSlideIdx: 0,
+  _previousX: 0,
+  _originalWidth: 0,
+
+  _totalWidth: Ember.computed('_slides.length', '_originalWidth', function() {
     let slides = this._slides;
     let numberOfSlides = slides && slides.length || 0;
-    let originalWidth = this.get('originalWidth');
-    let totalWidth = numberOfSlides * originalWidth;
+    let _originalWidth = this.get('_originalWidth');
+    let totalWidth = numberOfSlides * _originalWidth;
     return Ember.String.htmlSafe(`${totalWidth}`);
   }),
-  currentSlideIdx: 0,
 
   init() {
     this._super(...arguments);
@@ -31,113 +34,121 @@ export default Ember.Component.extend({
       let left = -width * i;
       slides[i].setProperties({width, height, left});
     }
-    this.set('originalWidth', width);
+    this.set('_originalWidth', width);
 
-    this.setupSlides();
+    this._stackSlides();
 
     let hammer = new Hammer(this.element);
 
     hammer.on('pan', event => {
-      this.pan(event);
+      this._pan(event);
     });
 
     hammer.on('panend', event => {
-      this.panEnd(event);
+      this._panEnd(event);
     });
   },
 
-  pan(event) {
+  _stackSlides() {
+    let _currentSlideIdx = this._currentSlideIdx;
+    let width = this.get('_originalWidth');
+    let slides = this._slides;
+    for (var i = 0, l = slides.length; i < l; i++) {
+      let slide = slides[i];
+      if (i < _currentSlideIdx) {
+        slide.set('_translateX', -width);
+      } else if (i === _currentSlideIdx) {
+        slide.set('_translateX', 0);
+      } else {
+        slide.set('_translateX', width);
+      }
+    }
+  },
+
+  _addSlide(slide) {
+    let slides = this._slides;
+    slides.pushObject(slide);
+  },
+
+  _pan(event) {
     Ember.run(() => {
-      this.translateSlides(event);
+      this._translateSlides(event.deltaX);
     });
   },
 
-  panEnd(event) {
+  _panEnd(event) {
     Ember.run(() => {
-      this.originX = null;
-      this.finishTranslation(event.deltaX);
+      this._previousX = null;
+      this._finishTranslation(event.deltaX);
     });
   },
 
-  finishTranslation(deltaX) {
-    let threshold = this.originalWidth/2;
+  _finishTranslation(deltaX) {
+    const THRESHOLD = 20; // pixels
+    const MAX_SLIDE_IDX = this._slides.length - 1;
     let offset, restoreNext, restorePrevious;
-    let currentSlideIdx = this.currentSlideIdx;
+    let _currentSlideIdx = this._currentSlideIdx;
+    let finish = true;
 
-    if (deltaX > threshold && currentSlideIdx > 0) {
+    if (deltaX > THRESHOLD && _currentSlideIdx > 0) {
       // move index to previous slide
-      this.decrementProperty('currentSlideIdx');
-      offset = this.originalWidth - deltaX;
+      this.decrementProperty('_currentSlideIdx');
+      offset = this._originalWidth - deltaX;
       // these restore variables return the slides to the "deck"
       restoreNext = -deltaX;
-    } else if (deltaX < -threshold && currentSlideIdx < (this._slides.length - 1)) {
+    } else if (deltaX < -THRESHOLD && _currentSlideIdx < MAX_SLIDE_IDX) {
       // move index to next slide
-      this.incrementProperty('currentSlideIdx');
-      offset = -(this.originalWidth + deltaX);
+      this.incrementProperty('_currentSlideIdx');
+      offset = -(this._originalWidth + deltaX);
       restorePrevious = -deltaX;
     } else {
       offset = -deltaX;
     }
 
-    this.moveAtIndex(offset, currentSlideIdx, restoreNext, restorePrevious);
+    this._translate(offset, _currentSlideIdx, restoreNext, restorePrevious, finish);
 
   },
 
-  translateSlides(event) {
+  _translateSlides(deltaX) {
     let offset;
-    if (!this.originX) {
-      offset = this.originX = event.deltaX;
+    if (!this._previousX) {
+      offset = this._previousX = deltaX;
     } else {
-      offset = event.deltaX - this.originX;
-      this.originX = event.deltaX;
+      offset = deltaX - this._previousX;
+      this._previousX = deltaX;
     }
 
-    this.moveAtIndex(offset, this.currentSlideIdx);
+    this._translate(offset, this._currentSlideIdx);
   },
 
-  moveAtIndex(offset, currentIndex, restoreNext, restorePrevious) {
+  _translate(offset, currentIndex, restoreNext, restorePrevious, finish) {
     let slides = this._slides;
 
     if (!slides.length) { return; }
 
     let previousSlide = slides[currentIndex - 1];
     let nextSlide = slides[currentIndex + 1];
-
     let currentSlide = slides[currentIndex];
 
-    if (restorePrevious && previousSlide && offset < 0) {
-      previousSlide.set('translateX', previousSlide.get('translateX') + restorePrevious);
-    } else if (previousSlide) {
-      previousSlide.set('translateX', previousSlide.get('translateX') + offset);
+    if (finish) {
+      const TRANSLATE_SPEED = 0.3;
+      if (previousSlide) { previousSlide.set('_translateSpeed', TRANSLATE_SPEED); }
+      if (nextSlide) { nextSlide.set('_translateSpeed', TRANSLATE_SPEED); }
+      currentSlide.set('_translateSpeed', TRANSLATE_SPEED);
     }
 
-    currentSlide.set('translateX', currentSlide.get('translateX') + offset);
+    if (restorePrevious && previousSlide && offset < 0) {
+      previousSlide.set('_translateX', previousSlide.get('_translateX') + restorePrevious);
+    } else if (previousSlide) {
+      previousSlide.set('_translateX', previousSlide.get('_translateX') + offset);
+    }
+
+    currentSlide.set('_translateX', currentSlide.get('_translateX') + offset);
 
     if (restoreNext && nextSlide && offset > 0) {
-      nextSlide.set('translateX', nextSlide.get('translateX') + restoreNext);
+      nextSlide.set('_translateX', nextSlide.get('_translateX') + restoreNext);
     } else if (nextSlide) {
-      nextSlide.set('translateX', nextSlide.get('translateX') + offset);
+      nextSlide.set('_translateX', nextSlide.get('_translateX') + offset);
     }
-  },
-
-  setupSlides() {
-    let currentSlideIdx = this.currentSlideIdx;
-    let width = this.get('originalWidth');
-    let slides = this._slides;
-    for (var i = 0, l = slides.length; i < l; i++) {
-      let slide = slides[i];
-      if (i < currentSlideIdx) {
-        slide.set('translateX', -width);
-      } else if (i === currentSlideIdx) {
-        slide.set('translateX', 0);
-      } else {
-        slide.set('translateX', width);
-      }
-    }
-  },
-
-  addSlide(slide) {
-    let slides = this._slides;
-    slides.pushObject(slide);
   }
 });

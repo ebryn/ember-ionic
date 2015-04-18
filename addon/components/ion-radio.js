@@ -4,5 +4,5 @@ import layout from '../templates/components/ion-radio';
 export default Ember.Component.extend({
   layout: layout,
   tagName: 'label',
-  classNames: ['radio']
+  classNames: ['item', 'item-radio']
 });

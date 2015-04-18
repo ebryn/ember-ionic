@@ -4,19 +4,20 @@ import IonItem from './ion-item';
 
 export default Ember.Component.extend({
   layout: layout,
-  classNames: ['button'],
   tagName: '',
   kindClass: Ember.computed('kind', function() {
     let kind = this.get('kind');
+    let output = 'button';
     if (kind) {
-      return `button button-${kind}`;
+      output += ` button-${kind}`;
     }
+    return output;
   }),
 
   init() {
     this._super(...arguments);
 
     let ionItemComponent = this.nearestOfType(IonItem);
-    ionItemComponent.registerOptionButton(this);
+    ionItemComponent._registerOptionButton(this);
   }
 });

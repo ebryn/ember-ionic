@@ -1,9 +1,9 @@
-{{#link-to 'item.show' class="item-content" style=transformOutput}}
+{{#link-to 'item.show' class="item-content" style=_transformOutput}}
   {{yield}}
 {{/link-to}}
 
-<div class="item-options {{optionVisibility}}">
-  {{~#each optionButtons as |button|}}
+<div class="item-options {{_optionVisibilityClass}}">
+  {{~#each _optionButtons as |button|}}
     {{~view context=button.context template=button.template class=button.kindClass}}
   {{~/each~}}
 </div>
