@@ -1,5 +1,3 @@
-import ionicListItem from 'ember-ionic/components/ion-list-item';
+import ionItem from 'ember-ionic/components/ion-item';
 
-export default ionicListItem.extend({
-  tagName: 'ion-item'
-});
+export default ionItem;

@@ -1,0 +1,33 @@
+<ion-header kind="light">Header</ion-header>
+<ion-content header=true footer=true>
+  <ion-button block=true>ohai</ion-button>
+  <ion-list>
+    <ion-checkbox>
+      Flux Capacitor
+    </ion-checkbox>
+
+    <ion-toggle>
+      Web Components
+    </ion-toggle>
+
+    <ion-radio>Yass. Choose meow</ion-radio>
+
+    <a class="item item-icon-left item-icon-right" href="#">
+      {{ion-icon "chatbubble-working"}}
+        Call Ma
+      {{ion-icon "chatbubble-working"}}
+    </a>
+    {{#each model.items as |item|}}
+      <ion-item avatar=true icon-right=true remove-animate=true complex=true right-editable=true>
+        <img ng-src={{item.face}} src={{item.face}}>
+        <h2>{{item.name}}</h2>
+        <p>{{item.lastText}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+        <ion-option-button kind="positive">Edit</ion-option-button>
+        <ion-option-button kind="assertive">Destroy</ion-option-button>
+      </ion-item>
+    {{/each}}
+  </ion-list>
+</ion-content>
+<ion-footer kind="light">Footer</ion-footer>

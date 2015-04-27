@@ -3,7 +3,7 @@ import {
   test
 } from 'ember-qunit';
 
-moduleForComponent('ion-list', {
+moduleForComponent('ion-radio', {
   // specify the other units that are required for this test
   // needs: ['component:foo', 'helper:bar']
 });
@@ -18,11 +18,4 @@ test('it renders', function(assert) {
   // renders the component to the page
   this.render();
   assert.equal(component._state, 'inDOM');
-});
-
-
-// this is probably a test that belongs in ion-item, ya?
-
-test('sliding an ion-item', function(assert) {
-  
 });
