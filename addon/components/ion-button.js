@@ -16,7 +16,7 @@ export default Ember.Component.extend({
   kindClass: Ember.computed('kind', function() {
     let kind = this.get('kind');
     if (kind) {
-      return `button-${this.get('kind')}`;
+      return `button-${kind}`;
     }
   })
 });
