@@ -4,7 +4,7 @@ Ember Components that use the Ionic project's CSS.
 
 ## Installation
 
-`ember install:addon ember-ionic`
+`ember install ember-ionic`
 
 ## Usage
 
