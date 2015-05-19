@@ -11,7 +11,8 @@
     "jquery": "^1.11.1",
     "loader.js": "ember-cli/loader.js#3.2.0",
     "qunit": "~1.17.1",
-    "ionic": "~1.0.0-rc.2"
+    "ionic": "~1.0.0-rc.2",
+    "hammerjs": "~2.0.4"
   },
   "resolutions": {
     "ember": "canary",
