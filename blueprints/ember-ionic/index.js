@@ -1,3 +1,5 @@
+var RSVP = require('rsvp');
+
 module.exports = {
   description: '',
 
@@ -11,7 +13,7 @@ module.exports = {
   normalizeEntityName: function() {}, // no-op since we're just adding dependencies
 
   afterInstall: function() {
-    return Ember.RSVP.all([
+    return RSVP.all([
       this.addBowerPackageToProject('ionic'),
       this.addBowerPackageToProject('hammerjs')
     ]);

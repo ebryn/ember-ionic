@@ -34,7 +34,8 @@
   ],
   "dependencies": {
     "ember-cli-babel": "^4.0.0",
-    "ember-cli-htmlbars": "^0.7.6"
+    "ember-cli-htmlbars": "^0.7.6",
+    "rsvp": "^3.0.18"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
